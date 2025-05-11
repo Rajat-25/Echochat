@@ -1,11 +1,12 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
+  "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -16,6 +17,24 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "@repo/db#deploy": {
+      "cache": false,
+      "inputs": ["prisma/migrations/**", "prisma/schema.prisma"]
+    },
+    "@repo/db#generate": {
+      "cache": false,
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["src/generated/client/**"]
+    },
+    "@repo/db#build": {
+      "dependsOn": ["^build", "@root/db#generate"],
+      "outputs": ["dist/**"]
+    },
+    "@repo/db#migrate": {
+      "cache": false,
+      "inputs": ["prisma/schema.prisma"],
+      "outputs": ["prisma/migrations/**"]
     }
   }
 }
