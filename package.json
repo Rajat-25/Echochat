@@ -1,5 +1,5 @@
 {
-  "name": "blinkchat",
+  "name": "echochat",
   "private": true,
   "scripts": {
     "build": "turbo run build",

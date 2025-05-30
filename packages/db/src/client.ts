@@ -1,4 +1,4 @@
-import { PrismaClient } from './generated/prisma'; 
+import { PrismaClient } from './generated/prisma';
 
 // Instantiate Prisma Client
 const prismaClientSingleton = () => {
@@ -9,13 +9,10 @@ declare global {
   var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
-
+const dbClient = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== 'production') {
-  globalThis.prismaGlobal = prisma;
+  globalThis.prismaGlobal = dbClient;
 }
 
-export default prisma;
-// Optionally, you can also re-export all types and enums from Prisma Client
-export * from './generated/prisma';
+export { dbClient };

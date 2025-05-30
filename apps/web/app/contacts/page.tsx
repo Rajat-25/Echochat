@@ -1,0 +1,40 @@
+'use server';
+import { getContactList } from '../../actions/ContactActions';
+import ContactForm from '../../components/ContactForm';
+import ContactItem from '../../components/ContactItem';
+
+const Contacts = async () => {
+  const response = await getContactList();
+  const { success, message, contacts } = response;
+  if (!success) {
+    return (
+      <div className='p-[1rem] h-[calc(100vh-4rem)] '>
+        <div className='h-full flex items-center justify-center text-gray-300'>Failed to load contacts.</div>
+      </div>
+    );
+  } else {
+    return (
+      <div className='p-[1rem] h-[calc(100vh-4rem)]'>
+        <div className='h-full w-full grid grid-cols-12 gap-[1rem] text-white '>
+          <div className='bg-[var(--color-authform)] col-span-4 rounded-xl p-4 space-y-[1rem] flex flex-col'>
+            <h2 className='text-xl font-semibold'>Your Contacts</h2>
+
+            {contacts?.length === 0 ? (
+              <div className='flex-1 flex items-center justify-center  text-gray-300'>
+                You do not have any contact.
+              </div>
+            ) : (
+              contacts?.map((contact) => (
+                <ContactItem key={contact.id} contact={contact} />
+              ))
+            )}
+          </div>
+
+          <ContactForm />
+        </div>
+      </div>
+    );
+  }
+};
+
+export default Contacts;

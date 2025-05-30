@@ -38,4 +38,3 @@ function Home({ text = 'Your world, one chat at a time' }: { text: string }) {
 }
 
 export default Home;
-

@@ -1,18 +1,28 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface ButtonProps {
   children: ReactNode;
   className?: string;
-  appName: string;
+  type: 'button' | 'submit';
+  onClick?: () => void;
+  disabled?: boolean;
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
+export const Button = ({
+  children,
+  disabled,
+  className,
+  onClick,
+  type = 'button',
+}: ButtonProps) => {
   return (
     <button
+      disabled={disabled}
+      type={type}
       className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
+      onClick={onClick}
     >
       {children}
     </button>

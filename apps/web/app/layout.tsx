@@ -1,19 +1,21 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import Navbar from '@repo/ui/navbar';
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import Providers from '../providers';
+import './globals.css';
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
 });
 
 export const metadata: Metadata = {
-  title: "Blinkchat",
-  description: "chat seamlessly across regions",
+  title: 'Echochat',
+  description: 'chat seamlessly across regions',
 };
 
 export default function RootLayout({
@@ -22,9 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+    <html lang='en'>
+      <body
+        className={`min-h-screen  ${geistSans.variable} ${geistMono.variable}`}
+      >
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
