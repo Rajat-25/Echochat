@@ -4,10 +4,11 @@ import { ContactList } from '@repo/db';
 import { Button } from '@repo/ui/button';
 import { useState, useTransition } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteContactHandler } from '../actions/ContactActions';
-import { selectEditContact } from '../store';
+import { deleteContactHandler } from '../../actions/ContactActions';
+import { selectEditContact } from '../../store';
 
 const ContactItem = ({ contact }: { contact: ContactList }) => {
+
   const [isPending, startTransition] = useTransition();
   const { firstName, lastName, phoneNo, id } = contact;
   const [error, setError] = useState<string | null>(null);

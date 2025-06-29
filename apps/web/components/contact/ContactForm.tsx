@@ -4,20 +4,22 @@ import { ContactFieldsType, ContactSchemaType } from '@repo/types';
 import { Button } from '@repo/ui/button';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { clearEditContact, RootState, selectEditContact } from '../../store';
 import {
   addContactHandler,
   editContactHandler,
-} from '../actions/ContactActions';
-import { clearEditContact, RootState, selectEditContact } from '../store';
+} from '../../actions/ContactActions';
 
 const initialValue = {
-  firstName: '',
-  lastName: '',
-  phoneNo: '',
+  firstName: 'ray',
+  lastName: 'jhonson',
+  phoneNo: '1111111111',
   email: '',
 };
 
 const ContactForm = () => {
+
   const dispatch = useDispatch();
 
   const selectedContact = useSelector(
@@ -40,7 +42,7 @@ const ContactForm = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(selectEditContact(undefined));
+      dispatch(clearEditContact());
     };
   }, []);
 

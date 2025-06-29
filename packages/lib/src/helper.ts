@@ -92,15 +92,12 @@ const Paths = {
   CHATS: '/chats',
 };
 
-
-
-
-const ErrorMsg = {
+const ServerMsg = {
+  SUCCESS: 'Successfully executed',
   UNAUTHORIZED: 'Unauthorized',
   SERVER_ERR: 'Internal server error',
   INVALID_FORM_DATA: 'Invalid form data',
 };
 
-
-export { contactFields, ErrorMsg, Paths, signInFields, signUpFields };
+export { contactFields, ServerMsg, Paths, signInFields, signUpFields };
 

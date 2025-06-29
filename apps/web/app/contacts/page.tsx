@@ -1,7 +1,7 @@
 'use server';
 import { getContactList } from '../../actions/ContactActions';
-import ContactForm from '../../components/ContactForm';
-import ContactItem from '../../components/ContactItem';
+import ContactForm from '../../components/contact/ContactForm';
+import ContactItem from '../../components/contact/ContactItem';
 
 const Contacts = async () => {
   const response = await getContactList();

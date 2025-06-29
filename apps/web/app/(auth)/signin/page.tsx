@@ -42,7 +42,7 @@ const SignIn = () => {
   const signInWithGoogleHandler = async () => {
     try {
       const res = await signIn('google', {
-        callbackUrl: '/chat',
+        callbackUrl: '/chats',
       });
     } catch (err) {
       alert('Something wrong');

@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
-import { signUpHandler } from '../../../actions/signup';
+import { userSignUp } from '../../../actions/UserActions';
 
 const SignUp = () => {
   const router = useRouter();
@@ -30,7 +30,7 @@ const SignUp = () => {
   const signUpWithCredHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await signUpHandler(cred);
+      const res = await userSignUp(cred);
 
       if (res.success) {
         await signIn('credentials', {
@@ -56,7 +56,6 @@ const SignUp = () => {
         callbackUrl: '/chat',
       });
     } catch (err) {
-      alert('Something wrong');
       console.log('Error', err);
     }
   };

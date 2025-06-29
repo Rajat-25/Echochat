@@ -30,7 +30,7 @@ function Home({ text = 'Your world, one chat at a time' }: { text: string }) {
         ))}
       </h2>
 
-      <Link href='/signin' className='bg-blue-700 hover:scale-105 font-medium text-xl  text-white rounded-full px-4 py-2 '>
+      <Link href='/signin' className='bg-blue-800 hover:scale-105 font-medium text-xl  text-white rounded-full px-6 py-4 '>
         Start Conversation
       </Link>
     </div>

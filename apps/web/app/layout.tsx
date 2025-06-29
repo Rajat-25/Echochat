@@ -1,8 +1,8 @@
-import Navbar from '@repo/ui/navbar';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Providers from '../providers';
 import './globals.css';
+import Navbar from '../components/Navbar';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: 'Echochat',
-  description: 'chat seamlessly across regions',
+  description: 'Chat seamlessly across regions',
 };
 
 export default function RootLayout({
