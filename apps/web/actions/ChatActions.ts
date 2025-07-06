@@ -3,12 +3,13 @@ import { dbClient } from '@repo/db';
 import { ServerMsg } from '@repo/lib';
 import {
   GetChatListResponseType,
+  GetChatsOfUser_ContactType,
   GetMyChatsType,
   UserChatsType,
 } from '@repo/types';
 import { isUserAuthenticated, isUserValid } from './UserActions';
 
-const getChatsOf_User_Contact = async (contactNo: string) => {
+const getChatsOf_User_Contact = async (contactNo: string):Promise<GetChatsOfUser_ContactType> => {
   const { success, user } = await isUserAuthenticated();
 
   if (!success || !user) {

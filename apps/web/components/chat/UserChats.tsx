@@ -15,6 +15,8 @@ const UserChats = ({
 
 
   useEffect(() => {
+    console.log('\n 3 \n');
+
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentChat.length]);
 

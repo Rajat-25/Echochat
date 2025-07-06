@@ -1,12 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '@repo/db';
+import { UserDBType, UserSliceType } from '@repo/types';
 
-type UserType = Omit<User, 'password'>;
 
-type UserSliceType = {
-  user: UserType | undefined;
-  isUserExist: boolean;
-};
 const initialState: UserSliceType = {
   user: undefined,
   isUserExist: false,
@@ -16,7 +11,7 @@ const userSlice = createSlice({
   name: 'user_slice',
   initialState,
   reducers: {
-    userLoggednIn: (state, action: PayloadAction<UserType>) => {
+    userLoggednIn: (state, action: PayloadAction<UserDBType>) => {
       state.user = action.payload;
     },
 
@@ -30,5 +25,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { userLoggednIn, userLoggedOut, setIsUserExist } = userSlice.actions;
+export const { userLoggednIn, userLoggedOut, setIsUserExist } =
+  userSlice.actions;
 export default userSlice;

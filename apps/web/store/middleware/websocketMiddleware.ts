@@ -4,7 +4,7 @@ import {
   WEBSOCKET_CONNECT,
   WEBSOCKET_SEND,
   WEBSOCKET_DISCONNECT,
-} from '../../lib/websocketActions';
+} from '@repo/lib';
 
 import {
   updateCurrentChat,
@@ -27,7 +27,13 @@ let typingTimeout: ReturnType<typeof setTimeout> | null = null;
 export const websocketMiddleware: Middleware =
   (store) => (next) => (action: any) => {
     if (action.type === WEBSOCKET_CONNECT) {
-      if (socket && socket.readyState === WebSocket.OPEN) return next(action);
+      if (
+        socket &&
+        (socket.readyState === WebSocket.OPEN ||
+          socket.readyState === WebSocket.CONNECTING)
+      ) {
+        return next(action);
+      }
 
       const { args } = action.payload;
 
@@ -113,6 +119,7 @@ export const websocketMiddleware: Middleware =
 
       socket.onclose = () => {
         console.log('❌ WebSocket closed');
+        store.dispatch(setIsConnectionActive(false));
         socket = null;
       };
 

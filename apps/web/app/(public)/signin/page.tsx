@@ -1,18 +1,20 @@
 'use client';
 import { signInFields } from '@repo/lib';
 import { AuthFieldType, SignInSchemaType } from '@repo/types';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
 const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [error, setError] = useState<string>('');
 
   const [cred, setCred] = useState<SignInSchemaType>({
-    email: process.env.NEXT_PUBLIC_DEMO_EMAIL || '',
-    password: process.env.NEXT_PUBLIC_DEMO_PASSWORD || '',
+    email: '',
+    password:  '',
   });
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,19 +67,34 @@ const SignIn = () => {
           <div className='text-white space-y-[1rem]'>
             {signInFields.map(
               ({ type, label, name, placeholder, key }: AuthFieldType) => {
+                const isPassword = type === 'password';
                 return (
                   <div key={key}>
                     <label className='text-white text-base font-medium mb-2 block'>
                       {label}
                     </label>
+                    <div className='bg-[#2C3333] focus-within:outline focus-within:outline-1   rounded-full flex flex-row justify-center items-center'>
                     <input
                       onChange={(e) => onChangeHandler(e)}
                       value={cred[name as keyof typeof cred]}
                       name={name}
-                      type={type}
-                      className='text-white bg-[#2C3333]   w-full text-sm px-4 py-3  rounded-full focus:outline-white'
+                      type={isPassword && showPassword ? 'text' : type}
+                      className=' text-white  bg-[#2C3333]  w-full text-sm px-4 py-3  rounded-full focus:outline-none'
                       placeholder={placeholder}
-                    />
+                      />
+                    {isPassword && (
+                      <span
+                        className='px-4 cursor-pointer text-white'
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      >
+                        {showPassword ? (
+                          <EyeSlashIcon className='w-5 h-5' />
+                        ) : (
+                          <EyeIcon className='w-5 h-5' />
+                        )}
+                      </span>
+                    )}
+                      </div>
                   </div>
                 );
               }

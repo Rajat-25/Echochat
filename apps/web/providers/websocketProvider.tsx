@@ -1,41 +1,45 @@
 'use client';
+import { WEBSOCKET_CONNECT, WEBSOCKET_DISCONNECT } from '@repo/lib';
 import { AuthSocketSendType } from '@repo/types';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getContactList } from '../actions/ContactActions';
-import { WEBSOCKET_CONNECT } from '../lib/websocketActions';
+import { resetSocketSliceState, RootState } from '../store';
+import { useSelector } from 'react-redux';
 
-const WebsocketProvider = () => {
+const WebsocketProvider = ({ contacts }: { contacts: string[] }) => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
+  const { isConnectionActive } = useSelector(
+    (state: RootState) => state.websocket_slice
+  );
 
   useEffect(() => {
+    console.log('\n 7 \n');
+    if (status !== 'authenticated') return;
+
     const connectWebSocket = async () => {
-      if (!session?.token) return;
-
-      const { contacts, success } = await getContactList();
-      const Contacts_phoneNo =
-        contacts?.map((contact) => contact.phoneNo) ?? [];
-
       const args: AuthSocketSendType = {
         type: 'auth',
         token: session?.token,
-        contacts: Contacts_phoneNo,
+        contacts,
       };
 
       dispatch({ type: WEBSOCKET_CONNECT, payload: { args } });
     };
+
     connectWebSocket();
 
-    //   return () => {
-    //     console.log('\n Disconnecting WebSocket...\n');
-    //     dispatch({
-    //       type: WEBSOCKET_DISCONNECT,
-    //     });
-    //     dispatch(resetSocketSliceState());
-    //   };
-  }, [session?.token]);
+    return () => {
+      if (status === 'authenticated' && isConnectionActive) {
+        console.log('\n Disconnecting WebSocket...\n');
+        dispatch({
+          type: WEBSOCKET_DISCONNECT,
+        });
+        dispatch(resetSocketSliceState());
+      }
+    };
+  }, [status]);
 
   return null;
 };

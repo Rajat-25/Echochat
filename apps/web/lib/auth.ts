@@ -153,7 +153,7 @@ const authOptions: AuthOptions = {
     },
   },
   pages: {
-    signIn: Paths.SING_IN,
+    signIn: Paths.SIGN_IN,
   },
 };
 

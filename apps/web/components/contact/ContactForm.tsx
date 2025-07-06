@@ -1,24 +1,31 @@
 'use client';
 import { contactFields } from '@repo/lib';
 import { ContactFieldsType, ContactSchemaType } from '@repo/types';
-import { Button } from '@repo/ui/button';
+import { Button } from '@repo/ui';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearEditContact, RootState, selectEditContact } from '../../store';
 import {
-  addContactHandler,
-  editContactHandler,
-} from '../../actions/ContactActions';
+  clearEditContact,
+  RootState,
+  useAddContactMutation,
+  useEditContactMutation,
+} from '../../store';
+import { showError, showSuccess } from '../../lib/toast';
+import { ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const initialValue = {
-  firstName: 'ray',
-  lastName: 'jhonson',
-  phoneNo: '1111111111',
+  firstName: '',
+  lastName: '',
+  phoneNo: '',
   email: '',
 };
 
 const ContactForm = () => {
+  const [addContact] = useAddContactMutation();
+  const [editContact] = useEditContactMutation();
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -29,6 +36,8 @@ const ContactForm = () => {
   const [cred, setCred] = useState<ContactSchemaType>(initialValue);
 
   useEffect(() => {
+    console.log('\n 4 \n');
+
     if (selectedContact) {
       const { firstName, lastName, phoneNo, email } = selectedContact;
       setCred({
@@ -41,6 +50,8 @@ const ContactForm = () => {
   }, [selectedContact]);
 
   useEffect(() => {
+    console.log('\n 5 \n');
+
     return () => {
       dispatch(clearEditContact());
     };
@@ -56,16 +67,25 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (selectedContact) {
-      const res = await editContactHandler({
-        contactId: selectedContact.id,
-        formData: cred,
-      });
-    } else {
-      const res = await addContactHandler(cred);
+    try {
+      if (selectedContact) {
+        await editContact({
+          contactId: selectedContact.id,
+          formData: cred,
+        }).unwrap();
+        router.refresh();
+        showSuccess('Contact updated successfully');
+      } else {
+        await addContact(cred).unwrap();
+        router.refresh();
+        showSuccess('Contact added successfully');
+      }
+
+      dispatch(clearEditContact());
+      setCred(initialValue);
+    } catch (error: any) {
+      showError(error?.data?.message || 'Something went wrong');
     }
-    dispatch(clearEditContact());
-    setCred(initialValue);
   };
 
   return (
@@ -101,6 +121,7 @@ const ContactForm = () => {
       >
         {selectedContact ? 'Update' : 'Add'} Contact
       </Button>
+      <ToastContainer />
     </form>
   );
 };

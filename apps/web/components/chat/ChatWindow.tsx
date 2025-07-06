@@ -1,15 +1,14 @@
 'use client';
 import {
   ChatSocketSendType,
+  ChatWindowPropsType,
   GetStatusSocketSendType,
   TypingSocketSendType,
 } from '@repo/types';
-import { useSession } from 'next-auth/react';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatsOf_User_Contact } from '../../actions/ChatActions';
-import { isUserValid } from '../../actions/UserActions';
-import { WEBSOCKET_SEND } from '../../lib/websocketActions';
+
+import { WEBSOCKET_SEND } from '@repo/lib';
 import {
   clearCurrentChat,
   RootState,
@@ -22,12 +21,12 @@ import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import UserChats from './UserChats';
 
-const ChatWindow = () => {
-
+const ChatWindow = ({
+  isUserExistInfo,
+  chatsData,
+  userPhoneNo,
+}: ChatWindowPropsType) => {
   const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const user = useMemo(() => session?.user, [session]);
-
   const { activeChatContact: chatContact, isConnectionActive } = useSelector(
     (state: RootState) => state.websocket_slice
   );
@@ -41,27 +40,28 @@ const ChatWindow = () => {
   const { isUserExist } = useSelector((state: RootState) => state.user_slice);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const typingRef = useRef<NodeJS.Timeout | null>(null);
 
   const [msg, setMsg] = useState('');
 
-  // const scrollToChatsBottom = () => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // };
-
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setMsg(e.target.value);
-
-    if (chatPhoneNo && user?.phoneNo) {
+    if (typingRef.current) {
+      clearTimeout(typingRef.current);
+    }
+    if (chatPhoneNo && userPhoneNo) {
       const typingPayload: TypingSocketSendType = {
         type: 'typing',
-        sender: user.phoneNo,
+        sender: userPhoneNo,
         receiver: chatPhoneNo,
       };
 
-      dispatch({
-        type: WEBSOCKET_SEND,
-        payload: typingPayload,
-      });
+      typingRef.current = setTimeout(() => {
+        dispatch({
+          type: WEBSOCKET_SEND,
+          payload: typingPayload,
+        });
+      }, 400);
     }
   };
 
@@ -73,7 +73,7 @@ const ChatWindow = () => {
     const outgoingMsg: ChatSocketSendType = {
       type: 'chat' as const,
       receiver: chatPhoneNo,
-      sender: user?.phoneNo ?? '',
+      sender: userPhoneNo ?? '',
       createdAt: id,
       text: msg,
     };
@@ -96,11 +96,10 @@ const ChatWindow = () => {
   };
 
   useEffect(() => {
+    console.log('\n 2 \n');
 
     if (!chatPhoneNo || !isWebcocketConnected) return;
-
     dispatch(clearCurrentChat());
-
 
     const statusPayload: GetStatusSocketSendType = {
       type: 'ask-status',
@@ -112,25 +111,11 @@ const ChatWindow = () => {
       payload: statusPayload,
     });
 
-    const fetchUserChats = async () => {
-      const { success, chats, message } =
-        await getChatsOf_User_Contact(chatPhoneNo);
-      if (success && chats?.length) {
-        dispatch(setCurrentChat(chats));
-      }
-    };
-
-    const findIsUserExist = async () => {
-      const { success, id, message } = await isUserValid(chatPhoneNo);
-
-      dispatch(setIsUserExist(success));
-      if (success) {
-        fetchUserChats();
-      }
-    };
-
-    findIsUserExist();
-  }, [chatPhoneNo, isWebcocketConnected]);
+    dispatch(setIsUserExist(isUserExistInfo));
+    if (isUserExistInfo && chatsData?.length) {
+      dispatch(setCurrentChat(chatsData));
+    }
+  }, [chatPhoneNo, isWebcocketConnected, isUserExistInfo, chatsData]);
 
   return (
     <>
@@ -141,7 +126,7 @@ const ChatWindow = () => {
           {isUserExist ? (
             <UserChats
               currentChat={currentChat}
-              phoneNo={user?.phoneNo}
+              phoneNo={userPhoneNo}
               messagesEndRef={messagesEndRef}
             />
           ) : (

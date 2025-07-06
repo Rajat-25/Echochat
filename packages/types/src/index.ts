@@ -1,9 +1,7 @@
-import { Chat, ContactList } from '@repo/db';
 import z from 'zod';
 
 import {
   authSchema,
-  chatSchema,
   typingSchema,
   contactSchema,
   signInSchema,
@@ -11,17 +9,51 @@ import {
   getStatusSchema,
 } from '@repo/lib';
 
-type SignUpSchemaType = z.infer<typeof signUpSchema>;
+export type UserDBType = {
+  firstName: string;
+  lastName: string;
+  phoneNo: string;
+  email: string;
+  id: string;
+  password: string;
+  provider: string;
+  joinedOn: Date;
+};
 
-type SignInSchemaType = z.infer<typeof signInSchema>;
+export type UserSliceType = {
+  user: UserDBType | undefined;
+  isUserExist: boolean;
+};
 
-type ContactSchemaType = z.infer<typeof contactSchema>;
+export type Chat = {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  timestamp: Date;
+  message: string;
+};
 
-type EditContactType = ContactSchemaType & {
+export type ContactList = {
+  firstName: string;
+  lastName: string;
+  phoneNo: string;
+  email: string | null;
+  id: string;
+  userId: string;
+};
+
+export type SignUpSchemaType = z.infer<typeof signUpSchema>;
+
+export type SignInSchemaType = z.infer<typeof signInSchema>;
+
+export type ContactSchemaType = z.infer<typeof contactSchema>;
+
+export type EditContactType = Omit<ContactSchemaType,'email'> & {
+  email?: string | null; //Added this
   id: string;
 };
 
-type AuthFieldType = {
+export type AuthFieldType = {
   label: string;
   name: string;
   type: string;
@@ -29,90 +61,88 @@ type AuthFieldType = {
   key: string;
 };
 
-type ContactFieldsType = {
+export type ContactFieldsType = {
   key: string;
   label: string;
   type: string;
   placeholder: string;
   name: string;
 };
-type SignUpResponse = {
+
+export type SignUpResponse = {
   success: boolean;
   message: string;
 };
 
-type UserType = {
+export type UserType = {
   email: string;
   password: string;
 };
 
-type GetContactListResponse = {
+export type GetContactListResponse = {
   success: boolean;
   message?: string | Error;
   contacts?: ContactList[];
 };
 
-type isUserValidResponseType = {
+export type isUserValidResponseType = {
   success: boolean;
   message?: string | Error;
   id?: string;
 };
 
-type Gen_Response = {
+export type Gen_Response = {
   success: boolean;
-  message?: string | Error;
+  message: string 
 };
 
-type EditContactHandlerParams = {
+export type EditContactParams = {
   contactId: string;
   formData: ContactSchemaType;
 };
 
-type UserContactListType = Omit<ContactList, 'userId'>;
+export type UserContactListType = Omit<ContactList, 'userId'>;
 
-type ContactSliceStateType = {
+export type ContactSliceStateType = {
   selectedContact: EditContactType | null;
   userContacts: Record<string, UserContactListType>;
 };
 
-type isUserValidType = {
+export type isUserValidType = {
   phoneNo: string;
 };
 
-type GetChatListResponseType = {
+export type GetChatListResponseType = {
   success: boolean;
   chats?: Chat[];
   message: string;
 };
 
-type ChatWithUserType = Chat & {
+export type ChatWithUserType = Chat & {
   sender: { firstName: string; lastName: string; phoneNo: string };
   receiver: { firstName: string; lastName: string; phoneNo: string };
 };
 
-type GetMyChatsType = {
+export type GetMyChatsType = {
   success: boolean;
   message: string;
   chats?: ChatWithUserType[];
 };
 
-type UserChatsType = Chat & {
+export type UserChatsType = Chat & {
   sender: { phoneNo: string };
   receiver: {
     phoneNo: string;
   };
 };
 
-type ChatWindowPropsType = {
-  contacts: ContactList[] | undefined;
-};
 
-type JWT_Type = {
+export type JWT_Type = {
   phoneNo: string;
   userId: string;
 };
 
-type ChatSocketSendType = {
+export type ChatSocketSendType = {
   type: 'chat';
   sender: string;
   receiver: string;
@@ -120,70 +150,64 @@ type ChatSocketSendType = {
   text: string;
 };
 
-type AuthSocketSendType = z.infer<typeof authSchema>;
+export type AuthSocketSendType = z.infer<typeof authSchema>;
 
-type TypingSocketSendType = z.infer<typeof typingSchema>;
+export type TypingSocketSendType = z.infer<typeof typingSchema>;
 
-type GetStatusSocketSendType = z.infer<typeof getStatusSchema>;
+export type GetStatusSocketSendType = z.infer<typeof getStatusSchema>;
 
-type ChatSocketResponseType = ChatSocketSendType & {
+export type ChatSocketResponseType = ChatSocketSendType & {
   id: string;
 };
 
-type TypingSocketResponseType = TypingSocketSendType;
+export type TypingSocketResponseType = TypingSocketSendType;
 
-type GetStatusSocketResponseType = GetStatusSocketSendType & {
+export type GetStatusSocketResponseType = GetStatusSocketSendType & {
   user: string;
   status: 'online' | 'offline';
 };
 
-type BroadcastMyStatusResponseType = {
+export type BroadcastMyStatusResponseType = {
   type: 'user-status';
   contact: string;
   status: 'online' | 'offline';
 };
 
-type SocketSendType =
+export type SocketSendType =
   | AuthSocketSendType
   | ChatSocketSendType
   | TypingSocketSendType
   | GetStatusSocketSendType;
 
-type BroadcastMyStatusPropsType = {
+export type BroadcastMyStatusPropsType = {
   phoneNo: string;
   status: 'online' | 'offline';
   contactList: string[];
 };
 
-// type ChatSocketResponseClientType = ChatSocketResponseType;
+export type ChatType = ChatSocketResponseType;
 
-// type ChatSocketResponseClientType = Omit<ChatSocketResponseType, 'createdAt'>;
+export type AllChatType = ChatType;
 
-// type ChatType = ChatSocketResponseType & {
-//   createdAt: string;
-// };
-
-type ChatType = ChatSocketResponseType;
-
-type AllChatType = ChatType;
-
-type ChatSliceStateType = {
+export type ChatSliceStateType = {
   currentChat: ChatType[];
   allChats: Record<string, ChatType>;
 };
-type ChatHeaderType = {
+
+export type ChatHeaderType = {
   chatContact: EditContactType;
 };
 
-type ActiveChatContactType = {
+export type ActiveChatContactType = {
   firstName: string;
   lastName: string;
   phoneNo: string;
-  email?: string | undefined;
+  // email?: string | undefined;
+  email?: string | null;
   id: string;
 };
 
-type WebscoketStateType = {
+export type WebscoketStateType = {
   isConnectionActive: boolean;
   contactStatus: boolean;
   activeChatContact: ActiveChatContactType | undefined;
@@ -191,42 +215,27 @@ type WebscoketStateType = {
   error: string | undefined;
 };
 
-export type {
-  ChatWindowPropsType,
-  AuthFieldType,
-  ContactFieldsType,
-  SignUpResponse,
-  UserType,
-  Gen_Response,
-  GetContactListResponse,
-  EditContactHandlerParams,
-  ContactSchemaType,
-  SignUpSchemaType,
-  SignInSchemaType,
-  EditContactType,
-  ContactSliceStateType,
-  isUserValidType,
-  GetChatListResponseType,
-  ChatWithUserType,
-  GetMyChatsType,
-  isUserValidResponseType,
-  UserChatsType,
-  ChatType,
-  ChatSliceStateType,
-  AllChatType,
-  JWT_Type,
-  AuthSocketSendType,
-  BroadcastMyStatusPropsType,
-  ChatSocketSendType,
-  GetStatusSocketSendType,
-  SocketSendType,
-  TypingSocketSendType,
-  TypingSocketResponseType,
-  ChatSocketResponseType,
-  GetStatusSocketResponseType,
-  UserContactListType,
-  ChatHeaderType,
-  BroadcastMyStatusResponseType,
-  ActiveChatContactType,
-  WebscoketStateType,
+export type GetChatsOfUser_ContactType = {
+  success: boolean;
+  message: string | Error;
+  chats?: ChatSocketResponseType[];
+};
+
+
+export type ChatWindowPropsType = {
+  isUserExistInfo: boolean;
+  chatsData?: ChatSocketResponseType[];
+  userPhoneNo?: string;
+};
+
+export type ChatListPropsType = {
+  chatProps: Record<string, ChatSocketResponseType>;
+  contactProps: Record<string, UserContactListType>;
+  userPhoneNo: string;
+  userId: string;
+};
+
+
+export type ContactsMenuProps = {
+  contacts: ContactList[] | undefined;
 };

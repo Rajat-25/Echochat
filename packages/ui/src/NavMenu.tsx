@@ -4,25 +4,28 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from './button';
+import { Paths, publicRoutes } from '@repo/lib';
 
-const NavMenu = () => {
+export const NavMenu = () => {
   const { status } = useSession();
   const sessionStatus = useMemo(() => status, [status]);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    console.log('\n 8 \n');
+
     if (
       sessionStatus === 'unauthenticated' &&
-      window.location.pathname !== '/signin'
+      !publicRoutes.includes(window.location.pathname)
     ) {
-      router.push('/signin');
+      router.push(Paths.SIGN_IN);
     }
   }, [sessionStatus]);
 
   const logOutHandler = async () => {
     try {
-      await signOut({ callbackUrl: '/' });
+      await signOut({ callbackUrl: Paths.HOME });
     } catch (err) {
       console.log('Logout failed:', err);
     }
@@ -79,5 +82,3 @@ const NavMenu = () => {
     </>
   );
 };
-
-export default NavMenu;

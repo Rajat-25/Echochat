@@ -1,5 +1,4 @@
-import Spinner from '@repo/ui/Spinner';
-import React from 'react';
+import { Spinner } from '@repo/ui';
 
 const loading = () => {
   return (

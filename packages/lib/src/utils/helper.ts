@@ -1,4 +1,4 @@
-const signUpFields = [
+export const signUpFields = [
   {
     key: 'firstName_su',
     label: 'First Name',
@@ -36,7 +36,7 @@ const signUpFields = [
   },
 ];
 
-const signInFields = [
+export const signInFields = [
   {
     key: 'email_si',
     label: 'Email',
@@ -53,7 +53,7 @@ const signInFields = [
   },
 ];
 
-const contactFields = [
+export const contactFields = [
   {
     key: 'firstName_cf',
     name: 'firstName',
@@ -84,20 +84,50 @@ const contactFields = [
   },
 ];
 
-const Paths = {
+export const Paths = {
+  HOME:"/",
   SIGN_UP: '/signup',
-  SING_IN: '/signin',
+  SIGN_IN: '/signin',
   CONTACTS: '/contacts',
   PROFILE: '/profile',
   CHATS: '/chats',
+  CHATS_DYNAMIC: '/chats/:path*',
+  ADD_CONTACT: '/add-contact',
 };
 
-const ServerMsg = {
+export const ServerMsg = {
   SUCCESS: 'Successfully executed',
-  UNAUTHORIZED: 'Unauthorized',
+  UNAUTHORIZED: 'Unauthorized to Perform this action',
   SERVER_ERR: 'Internal server error',
   INVALID_FORM_DATA: 'Invalid form data',
 };
 
-export { contactFields, ServerMsg, Paths, signInFields, signUpFields };
 
+const hits = new Map<string, number[]>();
+
+export const rateLimitHelper = (key: string): boolean => {
+  const LIMIT = 5; 
+  const INTERVAL = 10_000; // in ms (10s)
+
+  const now = Date.now();
+  const timestamps = hits.get(key) || [];
+
+  const recent = timestamps.filter((t) => now - t < INTERVAL);
+
+  if (recent.length >= LIMIT) return false;
+
+  recent.push(now);
+  hits.set(key, recent);
+  return true;
+};
+
+
+export const publicRoutes = ['/', '/signin', '/signup'];
+
+export const protectedRoutes = [
+  '/chats',
+  '/profile',
+  '/contacts',
+  '/chats/:path*',
+  '/add-contact',
+];

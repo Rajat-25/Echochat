@@ -1,77 +1,46 @@
 'use client';
-import { ContactList } from '@repo/db';
-import {
-  AllChatType,
-  ChatWithUserType,
-  UserContactListType,
-} from '@repo/types';
-import { useSession } from 'next-auth/react';
-import { useEffect, useMemo } from 'react';
+import { ChatListPropsType, EditContactType } from '@repo/types';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyChats } from '../../actions/ChatActions';
-import { getContactList } from '../../actions/ContactActions';
-import { RootState, setAllChats, setUserContacts } from '../../store';
 
-const ChatList = () => {
+import { useRouter } from 'next/navigation';
+import {
+  RootState,
+  setActiveChatContact,
+  setAllChats,
+  setUserContacts,
+} from '../../store';
 
-
-  const { data: session, status } = useSession();
-  const userId = useMemo(() => session?.user?.id, [session]);
-  const userContactNo = session?.user.phoneNo;
+const ChatList = ({
+  chatProps,
+  contactProps,
+  userPhoneNo,
+  userId,
+}: ChatListPropsType) => {
+  const router=useRouter()
   const { allChats } = useSelector((state: RootState) => state.chat_slice);
   const { userContacts } = useSelector(
     (state: RootState) => state.contact_slice
   );
+
   const dispatch = useDispatch();
 
-  const mapContacts = (contacts: ContactList[]) => {
-    const contactsRecord: Record<string, UserContactListType> = {};
-    contacts.forEach(({ userId, ...rest }) => {
-      contactsRecord[rest.phoneNo] = rest;
-    });
-    dispatch(setUserContacts(contactsRecord));
-  };
-
-  const getLatestChat = (userId: string, chats: ChatWithUserType[]) => {
-    const chatsRecord: Record<string, AllChatType> = {};
-
-    chats.forEach((chat: ChatWithUserType) => {
-      const { senderId, receiverId, sender, receiver, id, message, timestamp } =
-        chat;
-
-      const contactId: string =
-        senderId !== userId ? sender.phoneNo : receiver.phoneNo;
-
-      chatsRecord[contactId] = {
-        id,
-        type: 'chat',
-        receiver: receiver.phoneNo,
-        sender: sender.phoneNo,
-        createdAt: timestamp.toISOString(),
-        text: message,
-      };
-    });
-
-    dispatch(setAllChats(chatsRecord));
-  };
-
-  useEffect(() => {
-
-    if (!userId) return;
-    const getInfo = async () => {
-      const { success: chatSuccess, chats } = await getMyChats(userId);
-      const { success: contactSuccess, contacts } = await getContactList();
-
-      if (chatSuccess && chats) {
-        getLatestChat(userId, chats);
-      }
-      if (contactSuccess && contacts?.length) {
-        mapContacts(contacts);
-      }
+   const activeChatContactHandler = (contact: EditContactType) => {
+      dispatch(setActiveChatContact(contact));
+      router.push(`/chats?contact=${contact.phoneNo}`);
     };
 
-    getInfo();
-  }, [userId]);
+  useEffect(() => {
+    console.log('\n 1 \n');
+
+    if (!userId) return;
+    if (chatProps) {
+      dispatch(setAllChats(chatProps));
+    }
+    if (contactProps) {
+      dispatch(setUserContacts(contactProps));
+    }
+  }, [userId, chatProps, contactProps]);
 
   let content;
 
@@ -79,10 +48,9 @@ const ChatList = () => {
     content = (
       <div className='space-y-4'>
         {Object.entries(allChats).map(([contactId, item]) => {
-          const { id, type, receiver, sender, createdAt, text } =
-            item as AllChatType;
+          const { id, type, receiver, sender, createdAt, text } = item;
 
-          const contact = sender === userContactNo ? receiver : sender;
+          const contact = sender === userPhoneNo ? receiver : sender;
 
           const contactState = userContacts[contact]!;
 
@@ -90,6 +58,7 @@ const ChatList = () => {
 
           return (
             <div
+              onClick={() => activeChatContactHandler(contactState)}
               key={id}
               className='flex items-center gap-3 p-3 rounded-xl  shadow-sm hover:bg-gray-600  transition bg-zinc-100 dark:bg-zinc-800 '
             >
@@ -98,7 +67,8 @@ const ChatList = () => {
               </div>
               <div className='flex flex-col'>
                 <span className='font-medium  text-zinc-900 dark:text-purple-200 '>
-                  {firstName[0]?.toUpperCase() + firstName.slice(1)} {lastName}
+                  {firstName[0]?.toUpperCase() + firstName.slice(1)}{' '}
+                  {lastName[0]?.toUpperCase() + lastName.slice(1)}
                 </span>
                 <span className='text-sm text-zinc-600 dark:text-zinc-300 truncate max-w-xs'>
                   {text}
