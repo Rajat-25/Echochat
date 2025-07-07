@@ -14,7 +14,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@repo/lib": "*"
+    "zod": "^3.24.4"
   },
   "keywords": [],
   "author": "",

@@ -1,4 +1,4 @@
-import { phoneSchema } from '@repo/lib';
+import { phoneSchema } from '@repo/types';
 import ChatWindow from './ChatWindow';
 import { getChatsOf_User_Contact } from '../../actions/ChatActions';
 import { isUserValid } from '../../actions/UserActions';

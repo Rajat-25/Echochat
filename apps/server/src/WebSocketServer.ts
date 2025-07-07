@@ -17,7 +17,7 @@ import {
   chatSchema,
   getStatusSchema,
   typingSchema,
-} from '@repo/lib';
+} from '@repo/types';
 
 export class WebSocketSingleton {
   private static instance: WebSocketSingleton;

@@ -1,8 +1,8 @@
 'use server';
 
 import { dbClient } from '@repo/db';
-import { contactSchema, ServerMsg, Paths } from '@repo/lib';
-
+import {  ServerMsg, Paths } from '@repo/lib';
+import { contactSchema } from '@repo/types';
 import {
   ContactSchemaType,
   EditContactParams,

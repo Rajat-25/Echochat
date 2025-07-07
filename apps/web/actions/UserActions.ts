@@ -1,15 +1,18 @@
 'use server';
 import { dbClient } from '@repo/db';
-import { Paths, phoneSchema, ServerMsg, signUpSchema } from '@repo/lib';
+import { Paths, ServerMsg } from '@repo/lib';
+
 import {
   isUserValidResponseType,
+  phoneSchema,
   SignUpResponse,
+  signUpSchema,
   SignUpSchemaType,
 } from '@repo/types';
 import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 import authOptions from '../lib/auth';
 import { hashPassword } from '../lib/helper';
-import { redirect } from 'next/navigation';
 
 const isUserAuthenticated = async () => {
   const session = await getServerSession(authOptions);
@@ -187,5 +190,6 @@ export {
   GetUserInfo,
   isUserAuthenticated,
   isUserValid,
-  userSignUp,
+  userSignUp
 };
+
