@@ -13,6 +13,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "@repo/lib": "*"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
