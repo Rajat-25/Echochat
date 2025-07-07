@@ -28,7 +28,7 @@
       "outputs": ["src/generated/client/**"]
     },
     "@repo/db#build": {
-      "dependsOn": ["^build", "@root/db#generate"],
+      "dependsOn": ["^build", "@repo/db#generate"],
       "outputs": ["dist/**"]
     },
     "@repo/db#migrate": {
