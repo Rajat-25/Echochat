@@ -14,4 +14,7 @@ body {
   --color-primary: #0f0f0f;
   --color-authform: #191919;
   --color-auth-form-btn: #2447babf;
+  --color-listItemBg:#27272a;
+  --color-listItemHoverBg: #52525b;
+  --color-listItemAvatar: #5626ab;
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useRouter } from 'next/navigation';
 import {
+  clearCurrentChat,
   RootState,
   setActiveChatContact,
   setAllChats,
@@ -17,7 +18,7 @@ const ChatList = ({
   userPhoneNo,
   userId,
 }: ChatListPropsType) => {
-  const router=useRouter()
+  const router = useRouter();
   const { allChats } = useSelector((state: RootState) => state.chat_slice);
   const { userContacts } = useSelector(
     (state: RootState) => state.contact_slice
@@ -25,10 +26,11 @@ const ChatList = ({
 
   const dispatch = useDispatch();
 
-   const activeChatContactHandler = (contact: EditContactType) => {
-      dispatch(setActiveChatContact(contact));
-      router.push(`/chats?contact=${contact.phoneNo}`);
-    };
+  const activeChatContactHandler = (contact: EditContactType) => {
+    dispatch(clearCurrentChat());
+    dispatch(setActiveChatContact(contact));
+    router.push(`/chats?contact=${contact.phoneNo}`);
+  };
 
   useEffect(() => {
     console.log('\n 1 \n');
@@ -60,10 +62,11 @@ const ChatList = ({
             <div
               onClick={() => activeChatContactHandler(contactState)}
               key={id}
-              className='flex items-center gap-3 p-3 rounded-xl  shadow-sm hover:bg-gray-600  transition bg-zinc-100 dark:bg-zinc-800 '
+              className='flex items-center gap-3 p-3 rounded-xl  shadow-sm hover:bg-[var(--color-listItemHoverBg)]  transition  bg-[var(--color-listItemBg)] '
             >
               <div className='flex-shrink-0 w-10 h-10 rounded-full bg-purple-600  text-white flex items-center justify-center text-lg font-semibold'>
                 {firstName[0]?.toUpperCase()}
+                {lastName[0]?.toUpperCase()}
               </div>
               <div className='flex flex-col'>
                 <span className='font-medium  text-zinc-900 dark:text-purple-200 '>

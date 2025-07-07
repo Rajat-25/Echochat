@@ -239,3 +239,9 @@ export type ChatListPropsType = {
 export type ContactsMenuProps = {
   contacts: ContactList[] | undefined;
 };
+
+
+export type ChatWindowWrapperPropsType = {
+  contactNo?: string;
+  userPhoneNo: string;
+};
