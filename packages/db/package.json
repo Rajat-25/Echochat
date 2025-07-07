@@ -16,7 +16,8 @@
     "deploy": "prisma migrate deploy",
     "studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "build": "tsc "
+    "build": "tsc ",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
