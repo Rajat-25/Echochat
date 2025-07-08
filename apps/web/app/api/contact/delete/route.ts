@@ -5,8 +5,7 @@ import { deleteContactHandler } from '../../../../actions/ContactActions';
 
 export const DELETE = async (req: NextRequest) => {
   const token = await getToken({ req });
-  const {contactId } = await req.json();
-  console.log('hello',contactId)
+  const { contactId } = await req.json();
   if (!token) {
     return NextResponse.json({
       success: false,
@@ -18,7 +17,8 @@ export const DELETE = async (req: NextRequest) => {
     return NextResponse.json(result, {
       status: result?.success ? 200 : 400,
     });
-  } catch (err) {
+  } catch (err:any) {
+    console.error('API  /contact/delete :', err?.message);
     return NextResponse.json(
       {
         success: false,

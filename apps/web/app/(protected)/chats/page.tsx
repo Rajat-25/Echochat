@@ -8,15 +8,16 @@ import ChatWindowWrapper from '../../../components/chat/ChatWindowWrapper';
 import ContactsMenu from '../../../components/contact/ContactsMenu';
 import authOptions from '../../../lib/auth';
 
-const Chats = async ({
-  searchParams,
-}: {
-  searchParams: { contact?: string };
-}) => {
+type ChatsPropsType = {
+  searchParams: Promise<{ contact?: string }>;
+};
+
+const Chats = async ({ searchParams }: ChatsPropsType) => {
   const { contact: contactNo } = await searchParams;
   const session = await getServerSession(authOptions);
+
   const { phoneNo: userPhoneNo, id: userId } = session?.user!;
-  
+
   const { success: contactListSuccess, contacts } = await getContactList();
   const { success: myChatsSuccess, chats } = await getMyChats(userId);
 

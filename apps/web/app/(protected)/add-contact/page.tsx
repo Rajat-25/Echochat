@@ -2,11 +2,14 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Button } from '@repo/ui';
 import { addContactNo } from '../../../actions/UserActions';
 
-const AddContact = async ({
-  searchParams,
-}: {
-  searchParams: { error?: string; success?: string };
-}) => {
+type AddContactProps = {
+  searchParams: Promise<{
+    error?: string;
+    success?: string;
+  }>;
+};
+
+const AddContact = async ({ searchParams }: AddContactProps) => {
   const { success, error } = await searchParams;
 
   return (

@@ -1,7 +1,7 @@
-import { NavMenu } from '@repo/ui/';
 import Link from 'next/link';
+import { Navmenu } from './Navmenu';
 
-export default function Navbar() {
+const Navbar = () => {
   return (
     <nav className='h-[4rem] bg-[var(--color-primary)] shadow-md px-2 flex justify-between items-center'>
       <div className='font-medium text-lg '>
@@ -12,7 +12,9 @@ export default function Navbar() {
           EchoChat
         </Link>
       </div>
-      <NavMenu />
+      <Navmenu />
     </nav>
   );
-}
+};
+
+export default Navbar;

@@ -113,7 +113,7 @@ export const websocketMiddleware: Middleware =
           const error = err instanceof Error ? err.message : 'Unknown error';
 
           setWebsocketError(error);
-          console.log('❌ Websocket Client error', err);
+          console.log('❌ Websocket Client error');
         }
       };
 
@@ -124,7 +124,7 @@ export const websocketMiddleware: Middleware =
       };
 
       socket.onerror = (err) => {
-        console.log('❌ WebSocket error', err);
+        console.log('❌ WebSocket error');
       };
     } else if (action.type === WEBSOCKET_SEND) {
       if (socket?.readyState === WebSocket.OPEN) {

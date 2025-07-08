@@ -1,3 +1,5 @@
+const hits = new Map<string, number[]>();
+
 export const signUpFields = [
   {
     key: 'firstName_su',
@@ -84,16 +86,7 @@ export const contactFields = [
   },
 ];
 
-export const Paths = {
-  HOME:"/",
-  SIGN_UP: '/signup',
-  SIGN_IN: '/signin',
-  CONTACTS: '/contacts',
-  PROFILE: '/profile',
-  CHATS: '/chats',
-  CHATS_DYNAMIC: '/chats/:path*',
-  ADD_CONTACT: '/add-contact',
-};
+
 
 export const ServerMsg = {
   SUCCESS: 'Successfully executed',
@@ -102,8 +95,6 @@ export const ServerMsg = {
   INVALID_FORM_DATA: 'Invalid form data',
 };
 
-
-const hits = new Map<string, number[]>();
 
 export const rateLimitHelper = (key: string): boolean => {
   const LIMIT = 5; 
@@ -121,6 +112,16 @@ export const rateLimitHelper = (key: string): boolean => {
   return true;
 };
 
+export const Paths = {
+  HOME:"/",
+  SIGN_UP: '/signup',
+  SIGN_IN: '/signin',
+  CONTACTS: '/contacts',
+  PROFILE: '/profile',
+  CHATS: '/chats',
+  CHATS_DYNAMIC: '/chats/:path*',
+  ADD_CONTACT: '/add-contact',
+};
 
 export const publicRoutes = ['/', '/signin', '/signup'];
 

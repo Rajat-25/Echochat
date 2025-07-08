@@ -2,8 +2,8 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -16,8 +16,7 @@
     "deploy": "prisma migrate deploy",
     "studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "build": "tsc ",
-    "postinstall": "prisma generate"
+    "build": "tsc && prisma generate && cp -r src/generated dist/generated "
   },
   "keywords": [],
   "author": "",

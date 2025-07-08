@@ -135,8 +135,7 @@ export class WebSocketSingleton {
           const parseResult = chatSchema.safeParse(json);
 
           if (!parseResult.success) {
-            console.log(currentUserPhoneNo, '\n hello \n', json);
-            console.log('failing here');
+          
             ws.send(
               JSON.stringify({
                 message: 'Invalid chat payload',

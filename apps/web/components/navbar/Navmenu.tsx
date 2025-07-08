@@ -3,10 +3,10 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from './button';
+import { Button } from '../../../../packages/ui/src/button';
 import { Paths, publicRoutes } from '@repo/lib';
 
-export const NavMenu = () => {
+export const Navmenu = () => {
   const { status } = useSession();
   const sessionStatus = useMemo(() => status, [status]);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +27,7 @@ export const NavMenu = () => {
     try {
       await signOut({ callbackUrl: Paths.HOME });
     } catch (err) {
-      console.log('Logout failed:', err);
+      console.log('Logout failed');
     }
   };
 

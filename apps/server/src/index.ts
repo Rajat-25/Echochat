@@ -10,9 +10,8 @@ const server = http.createServer(app);
 app.use(express.json());
 dotenv.config();
 
-app.use(cors())
+app.use(cors());
 WebSocketSingleton.getInstance(server);
-
 
 server.listen(PORT, () => {
   console.log(`🚀 Server is listening on http://localhost:${PORT}`);

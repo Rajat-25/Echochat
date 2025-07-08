@@ -57,7 +57,7 @@ const Signup = () => {
         callbackUrl: Paths.CHATS,
       });
     } catch (err) {
-      console.log('Google signup error:', err);
+      console.log('Google signup error:');
     }
   };
   return (

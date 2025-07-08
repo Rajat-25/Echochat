@@ -1,4 +1,2 @@
-export * from './button'
-export * from './Spinner'
-export * from './NavMenu'
-   
+export * from './button';
+export * from './Spinner';

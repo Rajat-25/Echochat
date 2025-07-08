@@ -50,7 +50,7 @@ const ChatList = ({
     content = (
       <div className='space-y-4'>
         {Object.entries(allChats).map(([contactId, item]) => {
-          const { id, type, receiver, sender, createdAt, text } = item;
+          const { id,  receiver, sender, text } = item;
 
           const contact = sender === userPhoneNo ? receiver : sender;
 

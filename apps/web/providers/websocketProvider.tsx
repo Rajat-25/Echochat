@@ -32,7 +32,7 @@ const WebsocketProvider = ({ contacts }: { contacts: string[] }) => {
 
     return () => {
       if (status === 'authenticated' && isConnectionActive) {
-        console.log('\n Disconnecting WebSocket...\n');
+        console.log('\n Disconnecting WebSocket... \n');
         dispatch({
           type: WEBSOCKET_DISCONNECT,
         });

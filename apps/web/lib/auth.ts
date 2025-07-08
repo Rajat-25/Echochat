@@ -82,7 +82,7 @@ const authOptions: AuthOptions = {
     maxAge: 60 * 60, // 1 hour (in seconds)
   },
   callbacks: {
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({ user, account }) => {
       if (account?.provider === 'google') {
         const dbUser = await dbClient.user.findUnique({
           where: { email: user.email! },

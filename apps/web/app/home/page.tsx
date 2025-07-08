@@ -4,7 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
 
-const Home = ({ text }: { text: string }) => {
+const Home = () => {
+  const text=' Your world, one chat at a time ' 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 

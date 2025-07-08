@@ -2,8 +2,10 @@ import { phoneSchema } from '@repo/types';
 import ChatWindow from './ChatWindow';
 import { getChatsOf_User_Contact } from '../../actions/ChatActions';
 import { isUserValid } from '../../actions/UserActions';
-import { ChatSocketResponseType, ChatWindowWrapperPropsType } from '@repo/types';
-
+import {
+  ChatSocketResponseType,
+  ChatWindowWrapperPropsType,
+} from '@repo/types';
 
 const ChatWindowWrapper = async ({
   contactNo,
@@ -34,10 +36,10 @@ const ChatWindowWrapper = async ({
     const {
       success: chatSuccess,
       chats,
-      message,
     } = await getChatsOf_User_Contact(chatPhoneNo);
-
-    chatsData = chats;
+    if (chatSuccess) {
+      chatsData = chats;
+    }
   }
 
   return (

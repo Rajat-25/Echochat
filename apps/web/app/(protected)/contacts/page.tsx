@@ -4,7 +4,7 @@ import ContactItem from '../../../components/contact/ContactItem';
 
 const Contacts = async () => {
   const response = await getContactList();
-  const { success, message, contacts } = response;
+  const { success, contacts } = response;
   if (!success) {
     return (
       <div className='p-[1rem] h-[calc(100vh-4rem)] '>
