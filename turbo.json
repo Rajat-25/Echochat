@@ -18,23 +18,26 @@
       "cache": false,
       "persistent": true
     },
-    "@repo/db#deploy": {
-      "cache": false,
-      "inputs": ["prisma/migrations/**", "prisma/schema.prisma"]
-    },
     "@repo/db#generate": {
       "cache": false,
       "inputs": ["prisma/schema.prisma"],
-      "outputs": ["src/generated/client/**"]
+      "outputs": ["src/generated/prisma/**"]
     },
     "@repo/db#build": {
-      "dependsOn": ["^build", "@repo/db#generate"],
+      "dependsOn": ["@repo/db#generate"],
       "outputs": ["dist/**"]
     },
-    "@repo/db#migrate": {
-      "cache": false,
-      "inputs": ["prisma/schema.prisma"],
-      "outputs": ["prisma/migrations/**"]
+     "@repo/ui#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "@repo/lib#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "@repo/types#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     }
   }
 }
