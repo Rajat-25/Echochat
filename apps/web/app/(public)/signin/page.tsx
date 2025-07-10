@@ -1,7 +1,7 @@
 'use client';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Paths, signInFields } from '@repo/lib';
 import { AuthFieldType, SignInSchemaType } from '@repo/types';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -68,6 +68,7 @@ const SignIn = () => {
             {signInFields.map(
               ({ type, label, name, placeholder, key }: AuthFieldType) => {
                 const isPassword = type === 'password';
+                
                 return (
                   <div key={key}>
                     <label className='text-white text-base font-medium mb-2 block'>
@@ -76,7 +77,7 @@ const SignIn = () => {
                     <div className='bg-[#2C3333] focus-within:outline focus-within:outline-1   rounded-full flex flex-row justify-center items-center'>
                       <input
                         onChange={(e) => onChangeHandler(e)}
-                        value={cred[name as keyof typeof cred]}
+                        value={cred[name as keyof SignInSchemaType ]}
                         name={name}
                         type={isPassword && showPassword ? 'text' : type}
                         className=' text-white  bg-[#2C3333]  w-full text-sm px-4 py-3  rounded-full focus:outline-none'

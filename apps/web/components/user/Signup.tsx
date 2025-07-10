@@ -1,5 +1,5 @@
 'use client';
-
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Paths, signUpFields } from '@repo/lib';
 import { AuthFieldType, SignUpSchemaType } from '@repo/types';
 import { signIn } from 'next-auth/react';
@@ -10,6 +10,7 @@ import { useSignUpUserMutation } from '../../store';
 
 const Signup = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const [signUpUser] = useSignUpUserMutation();
   const [err, setErr] = useState<string>('');
 
@@ -22,11 +23,11 @@ const Signup = () => {
   };
 
   const [cred, setCred] = useState<SignUpSchemaType>({
-    firstName:  '',
-    lastName:  '',
-    phoneNo:  '',
-    email:  '',
-    password:  '',
+    firstName: '',
+    lastName: '',
+    phoneNo: '',
+    email: '',
+    password: '',
   });
 
   const signUpWithCredHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -70,20 +71,36 @@ const Signup = () => {
       <div className='text-white space-y-[1rem]'>
         {signUpFields.map(
           ({ type, label, name, placeholder, key }: AuthFieldType) => {
+            const isPassword = type === 'password';
+
             return (
               <div key={key}>
                 <label className='text-white text-base font-medium mb-2 block'>
                   {label}
                 </label>
-                <input
-                  required
-                  onChange={(e) => onChangeHandler(e)}
-                  value={cred[name as keyof SignUpSchemaType]}
-                  name={name}
-                  type={type}
-                  className='text-white bg-[#2C3333]   w-full text-sm px-4 py-3  rounded-full focus:outline-white'
-                  placeholder={placeholder}
-                />
+                <div className='bg-[#2C3333] focus-within:outline focus-within:outline-1   rounded-full flex flex-row justify-center items-center'>
+                  <input
+                    required
+                    onChange={(e) => onChangeHandler(e)}
+                    value={cred[name as keyof SignUpSchemaType]}
+                    name={name}
+                    type={type}
+                    className='text-white bg-[#2C3333]   w-full text-sm px-4 py-3  rounded-full focus:outline-none'
+                    placeholder={placeholder}
+                  />
+                  {isPassword && (
+                    <span
+                      className='px-4 cursor-pointer text-white'
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      {showPassword ? (
+                        <EyeSlashIcon className='w-5 h-5' />
+                      ) : (
+                        <EyeIcon className='w-5 h-5' />
+                      )}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           }
