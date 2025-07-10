@@ -23,6 +23,9 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.redirect(new URL('/add-contact', req.url));
   }
+  if (token && token.phoneNo && req.nextUrl.pathname === '/add-contact') {
+    return NextResponse.redirect(new URL('/chats', req.url));
+  }
 
   return NextResponse.next();
 }

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useSignUpUserMutation } from '../../store';
+import { Button } from '@repo/ui/client';
 
 const Signup = () => {
   const router = useRouter();
@@ -108,12 +109,12 @@ const Signup = () => {
       </div>
 
       <div className='flex flex-col mt-[1.5rem] gap-y-[1rem]'>
-        <button
+        <Button
           type='submit'
           className='w-full  px-4 py-3  tracking-wider font-bold rounded-full text-white bg-[var(--color-auth-form-btn)] focus:outline-none cursor-pointer'
         >
           Create An Account
-        </button>
+        </Button>
 
         <div className='relative '>
           <div className='absolute inset-0 flex items-center'>
@@ -126,13 +127,13 @@ const Signup = () => {
           </div>
         </div>
 
-        <button
+        <Button
           onClick={signUpWithGoogleHandler}
           type='button'
           className='w-full font-bold  py-3 px-4  tracking-wider  rounded-full text-white bg-[var(--color-auth-form-btn)] focus:outline-none cursor-pointer'
         >
           Sign Up With Google
-        </button>
+        </Button>
       </div>
 
       <p className='text-white text-normal mt-6 text-center'>

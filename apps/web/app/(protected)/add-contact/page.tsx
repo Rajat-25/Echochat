@@ -1,5 +1,5 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { Button } from '@repo/ui';
+import { Button } from '@repo/ui/client';
 import { addContactNo } from '../../../actions/UserActions';
 
 type AddContactProps = {

@@ -1,6 +1,8 @@
 'use client';
 import { ContactList, ContactsMenuProps, EditContactType } from '@repo/types';
-import { Button, Spinner } from '@repo/ui';
+import { Button } from '@repo/ui/client';
+import { Spinner } from '@repo/ui';
+
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

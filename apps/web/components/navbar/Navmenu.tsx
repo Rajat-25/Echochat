@@ -3,7 +3,7 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '../../../../packages/ui/src/button';
+import { Button } from '@repo/ui/client';
 import { Paths, publicRoutes } from '@repo/lib';
 
 export const Navmenu = () => {

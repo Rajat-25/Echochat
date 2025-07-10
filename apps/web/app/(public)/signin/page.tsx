@@ -2,6 +2,7 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Paths, signInFields } from '@repo/lib';
 import { AuthFieldType, SignInSchemaType } from '@repo/types';
+import { Button } from '@repo/ui/client';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -103,12 +104,12 @@ const SignIn = () => {
           </div>
 
           <div className='flex flex-col mt-[1.5rem] gap-y-[1rem]'>
-            <button
+            <Button
               type='submit'
               className='w-full  px-4 py-3  tracking-wider font-bold rounded-full text-white bg-[var(--color-auth-form-btn)] focus:outline-none cursor-pointer'
             >
               Sign In
-            </button>
+            </Button>
 
             <div className='relative '>
               <div className='absolute inset-0 flex items-center'>
@@ -121,13 +122,13 @@ const SignIn = () => {
               </div>
             </div>
 
-            <button
+            <Button
               onClick={signInWithGoogleHandler}
               type='button'
               className='w-full font-bold  py-3 px-4  tracking-wider  rounded-full text-white bg-[var(--color-auth-form-btn)] focus:outline-none cursor-pointer'
             >
               Sign In With Google
-            </button>
+            </Button>
           </div>
 
           <p className='text-white text-normal mt-6 text-center'>

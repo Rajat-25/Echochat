@@ -1,4 +1,4 @@
-import { Button } from '@repo/ui';
+import { Button } from '@repo/ui/client';
 import { ChangeEvent } from 'react';
 
 type ChatInputType = {

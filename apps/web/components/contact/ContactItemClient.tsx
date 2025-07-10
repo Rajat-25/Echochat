@@ -1,7 +1,7 @@
 'use client';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { ContactList } from '@repo/types';
-import { Button } from '@repo/ui';
+import { Button } from '@repo/ui/client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showError, showSuccess } from '../../lib/toast';

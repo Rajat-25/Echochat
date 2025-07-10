@@ -1,7 +1,7 @@
 'use client';
 import { contactFields } from '@repo/lib';
 import { ContactFieldsType, ContactSchemaType } from '@repo/types';
-import { Button } from '@repo/ui';
+import { Button } from '@repo/ui/client';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
